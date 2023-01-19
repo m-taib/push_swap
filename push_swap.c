@@ -6,20 +6,6 @@ void	ft_lstadd_front(t_list **lst, t_list *new)
 	*lst = new;
 }
 
-int		space(char *str)
-{
-	int		i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == ' ')
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
 int		ft_check_split(char c)
 {
 	if (c == ' ' || c == '\t')
@@ -101,79 +87,6 @@ char	**ft_split(char *str)
 	return (newstr);
 }
 
-int		duplicated_number(long long *arr,int	count)
-{
-	int		i;
-	int		j;
-
-	i = 0;
-	while (i < count)
-	{
-		j = i + 1;
-		while (j < count)
-		{
-			if (arr[i] == arr[j])
-				return (0);
-			j++;
-		}
-		i++;
-	}
-	return (1);
-}
-
-int		duplicated_sign(char *str)
-{
-	int		i;
-	int		j;
-
-	j = 0;
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == '-' || str[i] == '+')
-			j++;
-		i++;
-	}
-	if (j > 1)
-		return (0);
-	return (1);
-}
-
-int		not_dec(char **av)
-{
-	int		i;
-	int		j;
-	
-	i = 0;
-	while (av[i])
-	{
-		j = 0;
-		if (!duplicated_sign(av[i]))
-			return (0);
-		if (!(av[i][j]))
-			return (0);
-		while (av[i][j])
-		{
-			while (av[i][j] && av[i][j] == ' ')
-				j++;
-			if (av[i][j] == '-' || av[i][j] == '+')
-				if (av[i][j+1] == '\0')
-						return (0);
-			if (av[i][j] && (!(av[i][j] >= '0' && av[i][j] <= '9') && av[i][j] != '-' && av[i][j] != '+'))
-				return (0);
-			if (av[i][j+1] && av[i][j+1] == ' ')
-				while (av[i][j+1] && av[i][j+1] == ' ')
-					j++;
-			if (av[i][j] >= '0' && av[i][j] <= '9')
-				if (av[i][j+1] == '-' || av[i][j+1] == '+')
-					return (0);
-			j++;
-		}
-		i++;
-	}
-	return (1);
-}
-
 long long	ft_atoi(const char *str)
 {
 	int	i;
@@ -195,93 +108,6 @@ long long	ft_atoi(const char *str)
 		i++;
 	}
 	return (res * arb);
-}
-
-int		count_numbers(char 	**av)
-{
-	int		i;
-	int		j;
-	int		c;
-	char	**str;
-
-	i = 0;
-	c = 0;
-	while (av[i])
-	{
-		if (!(space(av[i])))
-		{
-			j = 0;
-			str = ft_split(av[i]);
-			while (str[++j])
-					c++;
-			free(str);
-		}
-		i++;
-		c++;
-	}
-	return (c);
-}
-
-void	fill_array(char **av,long long	*arr)
-{
-	int		i[3];
-	char 	**str;
-
-	i[0] = 0;
-	i[1] = 0;
-	while (av[i[0]])
-	{
-		if (!(space(av[i[0]])))
-		{
-			i[2] = 0;
-			str = ft_split(av[i[0]]);
-			while (str[i[2]])
-			{
-				arr[i[1]] = ft_atoi(str[i[2]++]);
-				i[1]++;
-			}
-			i[1]--;
-			free(str);
-		}
-		else
-			arr[i[1]] =  ft_atoi(av[i[0]]);
-		i[1]++;
-		i[0]++;
-	}
-}
-
-int		not_min_max(long long	*arr,int	count)
-{
-	int		i;
-
-	i = 0;
-	while (i < count)
-	{
-		if (arr[i] > INT_MAX || arr[i] < INT_MIN)
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
-long long 	*ft_check(char **av,int	*nb)
-{
-	long long	*arr;
-	
-	if (!not_dec(av))	
-		return (0);
-	if (!(count_numbers(av)))
-		return (0);
-	arr = malloc(sizeof(long long) * count_numbers(av));
-	if (!arr)
-		return (0);
-	fill_array(av,arr);
-	if (!not_min_max(arr,count_numbers(av)))
-		return (0);
-	if (!duplicated_number(arr, count_numbers(av)))
-		return (0);
-		*nb = count_numbers(av);
-	return (arr);
 }
 
 t_list	*arguments_list(long long	*arr,int nb)
@@ -441,6 +267,7 @@ int		main(int	ac,char	**av)
 	t_list 	*tmp1;
 	int		i;
 	int		r;
+
 	i = 0;
 	if (!ft_check(&av[1], &nb))
 	{
@@ -468,15 +295,19 @@ int		main(int	ac,char	**av)
 	}
 	head1 = 0;
 	head = &node;
-	if (nb == 2)
-	{
-		if ((*head)->index > (*head)->next->index)
-			sa(head);
+	if (nb >= 2 && nb <= 5)
+	{	
+		if (nb == 2)
+		{
+			if ((*head)->index > (*head)->next->index)
+				sa(head);
+		}
+		else if (nb == 3)
+			sort_3_elements(head);
+		else if (nb >= 3 && nb <= 5)
+			sort_5_elements(head,&head1, nb);
+		return (0);
 	}
-	else if (nb == 3)
-		sort_3_elements(head);
-	else if (nb >= 3 && nb <= 5)
-		sort_5_elements(head,&head1, nb);
 	i = 0;
 	head1 = 0;
 	
@@ -544,8 +375,10 @@ int		main(int	ac,char	**av)
 		nb = ft_lstsize(head1);
 		i--;
 	}
-	free(arr);
-	free(arr1);
-	while (1);
+	/*while (*head)
+	{
+		printf("%d->",(*head)->content);
+		*head = (*head)->next;
+	}*/
 	return (0);
 }
