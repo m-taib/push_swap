@@ -1,24 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstnew.c                                        :+:      :+:    :+:   */
+/*   linked_list_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mtaib <mtaib@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/30 13:11:01 by mtaib             #+#    #+#             */
-/*   Updated: 2023/01/30 13:11:04 by mtaib            ###   ########.fr       */
+/*   Created: 2023/01/24 18:34:23 by mtaib             #+#    #+#             */
+/*   Updated: 2023/01/24 18:35:38 by mtaib            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "push_swap.h"
 
-t_list	*ft_lstnew(int content)
+void	ft_lstadd_front(t_list **lst, t_list *new)
 {
-	t_list	*newnode;
+	new->next = *lst;
+	*lst = new;
+}
 
-	newnode = malloc(sizeof(t_list));
-	if (!newnode)
-		return (0);
-	newnode->content = content;
-	newnode->next = 0;
-	return (newnode);
+int	ft_lstsize(t_list *lst)
+{
+	int		i;
+	t_list	*tmp;
+
+	tmp = lst;
+	i = 0;
+	while (tmp)
+	{
+		tmp = tmp->next;
+		i++;
+	}
+	return (i);
 }

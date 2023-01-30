@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   check_errors2.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mtaib <mtaib@student.1337.ma>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/30 13:10:48 by mtaib             #+#    #+#             */
+/*   Updated: 2023/01/30 13:10:52 by mtaib            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 #include "push_swap.h"
 
 int		not_min_max(long long	*arr,int	count)
@@ -48,6 +59,16 @@ int		space(char *str)
 	return (1);
 }
 
+void	free_elements(char **str)
+{
+	int		i;
+
+	i = 0;
+	while (str[i])
+		free(str[i++]);
+	free(str);
+}
+
 int		count_numbers(char 	**av)
 {
 	int		i;
@@ -65,7 +86,7 @@ int		count_numbers(char 	**av)
 			str = ft_split(av[i]);
 			while (str[++j])
 					c++;
-			free(str);
+			free_elements(str);
 		}
 		i++;
 		c++;
